@@ -23,11 +23,5 @@ func RedisConnect() *redis.Client {
 
 	rdb := redis.NewClient(addr)
 
-	// opt, err := redis.ParseURL(REDIS_HOST)
-	// if err != nil {
-	// 	panic(err)
-	// }
-
-	// client := redis.NewClient(opt)
 	return rdb
 }

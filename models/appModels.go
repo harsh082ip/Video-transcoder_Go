@@ -24,3 +24,10 @@ type SessionInfo struct {
 	CreatedAt time.Time `json:"createdAt"`
 	UpdatedAt time.Time `json:"updatedNow"`
 }
+
+type FileInfo struct {
+	ID        primitive.ObjectID `bson:"_id,omitempty" json:"id,omitempty"`
+	Email     string             `json:"email" binding:"required"`
+	Filename  string             `json:"filename" binding:"required"`
+	S3Address string             `json:"s3address"`
+}

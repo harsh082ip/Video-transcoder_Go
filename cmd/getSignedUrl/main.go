@@ -14,6 +14,7 @@ func main() {
 	router := gin.Default()
 
 	routes.AuthRoutes(router)
+	routes.S3Routes(router)
 
 	if err := http.ListenAndServe(consts.WEBPORT, router); err != nil {
 		log.Fatal("Error starting the server on", consts.WEBPORT, err.Error())
