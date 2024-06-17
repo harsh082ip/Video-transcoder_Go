@@ -31,3 +31,8 @@ type FileInfo struct {
 	Filename  string             `json:"filename" binding:"required"`
 	S3Address string             `json:"s3address"`
 }
+
+type VideosJobs struct {
+	Key       string `json:"key"`
+	ObjectUrl string `json:"object_url"`
+}

@@ -57,7 +57,7 @@ func PreSignedUrlToPutImage(c *gin.Context) {
 		return
 	}
 
-	key := fileinfo.Email + "/" + uniqueKey + fileinfo.Filename
+	key := "videos/" + fileinfo.Email + "/" + uniqueKey + fileinfo.Filename
 	input := &s3.PutObjectInput{
 		Bucket: aws.String("harsh082ip.test"),
 		Key:    aws.String(key),
