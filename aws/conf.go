@@ -6,6 +6,7 @@ import (
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/config"
+	"github.com/aws/aws-sdk-go-v2/service/ecs"
 	"github.com/aws/aws-sdk-go-v2/service/s3"
 )
 
@@ -35,4 +36,18 @@ func GetS3Client() (*s3.Client, error) {
 	s3Client := s3.NewFromConfig(cfg)
 	// Return the S3 client and no error
 	return s3Client, nil
+}
+
+// ecs client
+func GetECSClient() (*ecs.Client, error) {
+	// Get the AWS configuration
+	cfg, err := GetAwsConf()
+	if err != nil {
+		// Return an empty ecs client and a formatted error message
+		return nil, fmt.Errorf("error in getting ecs client: %v", err.Error())
+	}
+	// Create an ecs client from the configuration
+	ecsClient := ecs.NewFromConfig(cfg)
+	// Return the ecs client and no error
+	return ecsClient, nil
 }
