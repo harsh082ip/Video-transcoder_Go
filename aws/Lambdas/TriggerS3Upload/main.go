@@ -5,11 +5,11 @@ import (
 	"encoding/json"
 	"fmt"
 	"log"
-	"strconv"
 	"time"
 
 	"github.com/aws/aws-lambda-go/events"
 	"github.com/aws/aws-lambda-go/lambda"
+	jobscontroller "github.com/harsh082ip/Video-transcoder_Go/controllers/jobsController"
 	"github.com/harsh082ip/Video-transcoder_Go/db"
 	"github.com/harsh082ip/Video-transcoder_Go/models"
 )
@@ -46,22 +46,9 @@ func handleRequest(ctx context.Context, s3Event events.S3Event) {
 		}
 
 		// Increase job count
-		count, err := rdb.Get(ctx1, "Jobs").Result()
+		err = jobscontroller.IncreaseJobsCount(ctx1)
 		if err != nil {
-			log.Fatal("Error in Getting Jobs Count from redis", err.Error())
-		}
-
-		// Convert the value to an integer
-		val, err := strconv.Atoi(count)
-		if err != nil {
-			log.Fatalf("Failed to Jobs value to integer: %v", err.Error())
-		}
-
-		// increse it by 1
-		val++
-		err = rdb.Set(ctx1, "Jobs", val, 0).Err()
-		if err != nil {
-			log.Fatal("Failed in Incresing Jobs Count, ", err.Error())
+			log.Fatal(err.Error())
 		}
 
 		log.Println("Jobs pushed to queue, \nurl := ", videojobs.ObjectUrl)

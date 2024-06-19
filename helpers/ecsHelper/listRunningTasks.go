@@ -18,7 +18,7 @@ func ListRunningTask() (int, error) {
 
 	// List all tasks in the ECS cluster
 	listTasksResp, err := ecsClient.ListTasks(context.TODO(), &ecs.ListTasksInput{
-		Cluster: aws.String("Video-Transcoder"),
+		Cluster: aws.String("go-Cluster"),
 	})
 	if err != nil {
 		return 0, fmt.Errorf("error in listing task, %v", err.Error())
@@ -31,7 +31,7 @@ func ListRunningTask() (int, error) {
 
 	// Describe ECS tasks
 	describeTasksResp, err := ecsClient.DescribeTasks(context.TODO(), &ecs.DescribeTasksInput{
-		Cluster: aws.String("Video-Transcoder"),
+		Cluster: aws.String("go-Cluster"),
 		Tasks:   listTasksResp.TaskArns,
 	})
 	if err != nil {
