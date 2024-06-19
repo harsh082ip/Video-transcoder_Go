@@ -32,7 +32,7 @@ func main() {
 	// START PROCESS
 	for {
 
-		res, err := rdb.RPop(context.TODO(), "videos").Result()
+		res, err := rdb.RPop(context.TODO(), "VideoJobs").Result()
 		if err == redis.Nil {
 			// No jobs found, check again
 			log.Println("Checking Jobs again")
