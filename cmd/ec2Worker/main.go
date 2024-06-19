@@ -17,8 +17,8 @@ import (
 
 func main() {
 
-	ctx, cancel := context.WithTimeout(context.TODO(), 30*time.Second)
-	defer cancel()
+	// ctx, cancel := context.WithTimeout(context.TODO(), 30*time.Second)
+	// defer cancel()
 	var videojobs models.VideosJobs
 	rdb := db.RedisConnect()
 	AWS_ACCESS_KEY_ID := os.Getenv("AWS_ACCESS_KEY_ID")
@@ -32,7 +32,7 @@ func main() {
 	// START PROCESS
 	for {
 
-		res, err := rdb.RPop(ctx, "videos").Result()
+		res, err := rdb.RPop(context.TODO(), "videos").Result()
 		if err == redis.Nil {
 			// No jobs found, check again
 			log.Println("Checking Jobs again")
@@ -65,7 +65,7 @@ func main() {
 				log.Fatal("error in running tasks, ", err.Error())
 			}
 
-			err = jobscontroller.DecreaseJobsCount(ctx)
+			err = jobscontroller.DecreaseJobsCount(context.TODO())
 			if err != nil {
 				log.Fatal("Error in Decreasing Job Count")
 			}
