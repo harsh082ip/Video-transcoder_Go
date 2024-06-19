@@ -53,6 +53,7 @@ func main() {
 			}
 			if runningTasks >= 5 {
 				time.Sleep(time.Second * 2)
+				log.Println("Checking tasks again")
 				continue
 			}
 			DESTINATION_1080 := "s3://" + DESTINATION_BUCKET_NAME + "/" + videojobs.Key + "1080.mp4"
