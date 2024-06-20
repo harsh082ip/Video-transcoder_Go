@@ -59,6 +59,9 @@ func main() {
 			DESTINATION_1080 := "s3://" + DESTINATION_BUCKET_NAME + "/" + videojobs.Key + "1080.mp4"
 			DESTINATION_720 := "s3://" + DESTINATION_BUCKET_NAME + "/" + videojobs.Key + "720.mp4"
 			DESTINATION_360 := "s3://" + DESTINATION_BUCKET_NAME + "/" + videojobs.Key + "360.mp4"
+			log.Println(DESTINATION_1080)
+			log.Println(DESTINATION_720)
+			log.Println(DESTINATION_360)
 
 			resp, err := ecscontroller.RunECSTask(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, videojobs.ObjectUrl, DESTINATION_1080, DESTINATION_720, DESTINATION_360)
 			if err != nil || !resp {
