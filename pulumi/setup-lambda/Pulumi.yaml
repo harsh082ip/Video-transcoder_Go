@@ -1,0 +1,7 @@
+name: setup-lamda
+runtime: go
+description: lambda function that triggers on s3 upload
+config:
+  pulumi:tags:
+    value:
+      pulumi:template: aws-go

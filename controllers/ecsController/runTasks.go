@@ -88,5 +88,3 @@ func RunECSTask(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, SOURCE_IMAGE, DESTINAT
 
 	return false, fmt.Errorf("unexpected Error in Starting a task")
 }
-
-// ffmpeg-container
