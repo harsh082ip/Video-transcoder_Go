@@ -1,0 +1,7 @@
+name: setup-ecs-task-definition
+runtime: go
+description: Setup ECS task definition for this project
+config:
+  pulumi:tags:
+    value:
+      pulumi:template: aws-go
