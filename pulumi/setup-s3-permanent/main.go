@@ -37,7 +37,7 @@ func main() {
 		}
 
 		// Disable block all public access
-		_, err = s3.NewBucketPublicAccessBlock(ctx, bucketName+"PublicAccessBlock", &s3.BucketPublicAccessBlockArgs{
+		publicAccessBlock, err := s3.NewBucketPublicAccessBlock(ctx, bucketName+"PublicAccessBlock", &s3.BucketPublicAccessBlockArgs{
 			Bucket:                bucket.ID(),
 			BlockPublicAcls:       pulumi.Bool(false),
 			IgnorePublicAcls:      pulumi.Bool(false),
@@ -71,7 +71,7 @@ func main() {
 			_, err = s3.NewBucketPolicy(ctx, bucketName+"Policy", &s3.BucketPolicyArgs{
 				Bucket: pulumi.String(bucketID), // Use the bucketID string
 				Policy: pulumi.String(bucketPolicy),
-			})
+			}, pulumi.DependsOn([]pulumi.Resource{publicAccessBlock}))
 			if err != nil {
 				return "", err
 			}

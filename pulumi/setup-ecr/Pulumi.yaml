@@ -1,0 +1,7 @@
+name: setup-ecr
+runtime: go
+description: Setup ECR for this project
+config:
+  pulumi:tags:
+    value:
+      pulumi:template: aws-go
