@@ -22,7 +22,7 @@ cd pulumi
 
 for dir in setup-s3-temp setup-s3-permanent setup-lambda setup-ecr setup-ecs-task-definition setup-ecs-cluster; do
   cd $dir
-  yq e ".config.\"aws:region\" = \"$AWS_REGION\"" -i Pulumi.dev.yaml
+  pulumi config set aws:region "$AWS_REGION"
   cd ..
 done
 
@@ -105,7 +105,6 @@ pulumi refresh --yes  # Sync the state before deploying
 pulumi up --yes
 cd ..
 
-
 # Save the environment variables to a file
 echo "Saving environment variables to env_vars.sh..."
 
@@ -119,10 +118,8 @@ echo "Saving environment variables to env_vars.sh..."
   echo "export IMAGE_URI=\"${IMAGE_URI:-your-image-uri}\""
 } > env_vars.sh || { echo "Failed to write to env_vars.sh"; }
 
-
-# Source the env_vars.sh
+# Source the env_vars.shs
 source env_vars.sh
 
 # Success message
 echo "All your resources are setup successfully."
-
