@@ -23,6 +23,7 @@ get_aws_credentials() {
   echo "PERMANENT_BUCKET_NAME=${PERMANENT_BUCKET_NAME:-not set}"
   echo "ECR_REPOSITORY_NAME=${ECR_REPOSITORY_NAME:-not set}"
   echo "IMAGE_URI=${IMAGE_URI:-not set}"
+  echo "KEY_PAIR_NAME=${KEY_PAIR_NAME:-not set}"
 
   # Check if the user wants to change any variables
   if confirm_change "AWS_REGION"; then
@@ -43,6 +44,10 @@ get_aws_credentials() {
 
   if confirm_change "IMAGE_URI"; then
     read -p "Enter the Docker image URI: " IMAGE_URI
+  fi
+
+  if confirm_change "KEY_PAIR_NAME"; then
+    read -p "Enter the key pair name: " KEY_PAIR_NAME
   fi
 
   # Save the environment variables to a file
@@ -70,7 +75,7 @@ fi
 BASE_DIR="$(pwd)"  # Get the current working directory
 
 # Navigate to each directory and deprovision resources
-for dir in setup-s3-temp setup-s3-permanent setup-lambda setup-ecr setup-ecs-task-definition setup-ecs-cluster; do
+for dir in setup-s3-temp setup-s3-permanent setup-lambda setup-ecr setup-ecs-task-definition setup-ecs-cluster setup-ec2; do
   cd "$BASE_DIR/pulumi/$dir"  # Use the path relative to the BASE_DIR
   pulumi down --yes
   cd "$BASE_DIR"  # Go back to the base directory

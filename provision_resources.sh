@@ -2,6 +2,7 @@
 
 echo "Let's set up your resources"
 sleep 1
+rm -rf env_vars.sh
 
 # Read AWS credentials
 read -p "Enter your AWS Access Key ID: " AWS_ACCESS_KEY_ID
@@ -11,7 +12,7 @@ echo  # For newline after entering secret key
 echo "Warning: You need to give proper permission to this IAM user."
 
 # Export AWS credentials as environment variables
-export AWS_ACCESS_KEY_ID="$AWS_ACCESS_KEY_ID" 
+export AWS_ACCESS_KEY_ID="$AWS_ACCESS_KEY_ID"   
 export AWS_SECRET_ACCESS_KEY="$AWS_SECRET_ACCESS_KEY" 
 
 # Ask for the AWS region
@@ -20,7 +21,7 @@ read -p "In which AWS region do you want to setup resources? (e.g., us-east-1): 
 # Change directories and update region in Pulumi configurations
 cd pulumi
 
-for dir in setup-s3-temp setup-s3-permanent setup-lambda setup-ecr setup-ecs-task-definition setup-ecs-cluster; do
+for dir in setup-s3-temp setup-s3-permanent setup-lambda setup-ecr setup-ecs-task-definition setup-ecs-cluster setup-ec2; do
   cd $dir
   pulumi config set aws:region "$AWS_REGION"
   cd ..
@@ -46,6 +47,15 @@ pulumi up --yes
 cd ..
 
 cd setup-lambda
+pulumi refresh --yes  # Sync the state before deploying
+pulumi up --yes
+cd ..
+
+# Ask for the key pair name for EC2 instance
+read -p "Enter the name of the EC2 key pair: " KEY_PAIR_NAME
+export KEY_PAIR_NAME="$KEY_PAIR_NAME"
+
+cd setup-ec2
 pulumi refresh --yes  # Sync the state before deploying
 pulumi up --yes
 cd ..
@@ -103,7 +113,7 @@ cd ..
 cd setup-ecs-cluster
 pulumi refresh --yes  # Sync the state before deploying
 pulumi up --yes
-cd ..
+cd ../..
 
 # Save the environment variables to a file
 echo "Saving environment variables to env_vars.sh..."
@@ -116,6 +126,7 @@ echo "Saving environment variables to env_vars.sh..."
   echo "export PERMANENT_BUCKET_NAME=\"${PERMANENT_BUCKET_NAME:-my-permanent-bucket}\""
   echo "export ECR_REPOSITORY_NAME=\"${ECR_REPOSITORY_NAME:-my-ecr-repo}\""
   echo "export IMAGE_URI=\"${IMAGE_URI:-your-image-uri}\""
+  echo "export KEY_PAIR_NAME=\"${KEY_PAIR_NAME:-your-}\""
 } > env_vars.sh || { echo "Failed to write to env_vars.sh"; }
 
 # Source the env_vars.shs
