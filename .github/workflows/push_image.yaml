@@ -33,3 +33,5 @@ jobs:
           context: .
           push: true
           tags: 111654129626.dkr.ecr.ap-south-1.amazonaws.com/video-transcoder:latest
+          platform: linux/amd64   # <-- ADD THIS LINE
+
