@@ -3,23 +3,33 @@ package aws_conf
 import (
 	"context"
 	"fmt"
+	"os"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/config"
+	"github.com/aws/aws-sdk-go-v2/credentials"
 	"github.com/aws/aws-sdk-go-v2/service/ecs"
 	"github.com/aws/aws-sdk-go-v2/service/s3"
 )
 
 // GetAwsConf loads the AWS configuration
 // It returns an aws.Config object and an error if any occurred
+
 func GetAwsConf() (aws.Config, error) {
-	// Load the default AWS configuration with the specified region
-	cfg, err := config.LoadDefaultConfig(context.TODO(), config.WithRegion("ap-south-1"))
+	// Hardcoded credentials (not recommended for prod)
+	accessKey := os.Getenv("AWS_ACCESS_KEY")
+	secretKey := os.Getenv("AWS_SECRET_KEY")
+
+	// Load the AWS configuration with custom credentials and region
+	cfg, err := config.LoadDefaultConfig(context.TODO(),
+		config.WithRegion("ap-south-1"),
+		config.WithCredentialsProvider(credentials.NewStaticCredentialsProvider(accessKey, secretKey, "")),
+	)
+
 	if err != nil {
-		// Return an empty config and a formatted error message
-		return aws.Config{}, fmt.Errorf("unable to load sdk config: %v", err.Error())
+		return aws.Config{}, fmt.Errorf("unable to load SDK config: %v", err)
 	}
-	// Return the loaded configuration and no error
+
 	return cfg, nil
 }
 

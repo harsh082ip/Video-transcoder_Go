@@ -26,7 +26,7 @@ func main() {
 	DESTINATION_BUCKET_NAME := os.Getenv("DESTINATION_BUCKET_NAME")
 
 	if AWS_ACCESS_KEY_ID == "" || AWS_SECRET_ACCESS_KEY == "" || DESTINATION_BUCKET_NAME == "" {
-		log.Fatal("Some required env are needed to proceed")
+		log.Fatal("Some required env are needed to proceed", AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, DESTINATION_BUCKET_NAME)
 	}
 
 	// START PROCESS

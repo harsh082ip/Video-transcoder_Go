@@ -3,6 +3,7 @@ package s3controller
 import (
 	"context"
 	"net/http"
+	"os"
 	"time"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
@@ -59,13 +60,14 @@ func PreSignedUrlToPutImage(c *gin.Context) {
 
 	key := "videos/" + fileinfo.Email + "/" + uniqueKey + fileinfo.Filename
 	input := &s3.PutObjectInput{
-		Bucket: aws.String("harsh082ip.test"),
-		Key:    aws.String(key),
+		Bucket:      aws.String(os.Getenv("AWS_BUCKET")),
+		Key:         aws.String(key),
+		ContentType: aws.String("video/mp4"),
 	}
 
 	presignedClient := s3.NewPresignClient(s3Client)
 
-	presignedURL, err := presignedClient.PresignPutObject(context.TODO(), input, s3.WithPresignExpires(5*time.Minute))
+	presignedURL, err := presignedClient.PresignPutObject(context.TODO(), input, s3.WithPresignExpires(15*time.Minute))
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"status": "Error in creating a pre-signed url :/",
@@ -76,6 +78,6 @@ func PreSignedUrlToPutImage(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{
 		"msg":        "Pre-Signed Url Creation Success",
 		"URL":        presignedURL,
-		"expires in": "5 Minutes",
+		"expires in": "15 Minutes",
 	})
 }
