@@ -30,6 +30,6 @@ jobs:
       - name: Build and push Docker image to ECR
         uses: docker/build-push-action@v5
         with:
-          context: ./backup/backend  # Same as your previous
+          context: .
           push: true
           tags: 111654129626.dkr.ecr.ap-south-1.amazonaws.com/video-transcoder:latest
